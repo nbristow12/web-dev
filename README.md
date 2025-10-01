@@ -1,6 +1,6 @@
 # Web Development App
 
-A Node.js web application for user registration with PostgreSQL database integration, designed for deployment on Vercel.
+A Node.js web application for user registration with PostgreSQL database integration, designed for deployment on Vercel. Features a modern React frontend with state management and responsive design.
 
 ## Features
 
@@ -15,7 +15,7 @@ A Node.js web application for user registration with PostgreSQL database integra
 
 - **Backend**: Node.js, Express.js
 - **Database**: PostgreSQL (Neon hosted)
-- **Frontend**: HTML, CSS, JavaScript
+- **Frontend**: React, CSS3
 - **Deployment**: Vercel
 
 ## Setup Instructions
@@ -50,11 +50,19 @@ npm install
 
 ### 4. Run Locally
 
+#### Production Mode (React Build)
 ```bash
+npm run build
 npm start
 ```
 
-The application will be available at `http://localhost:3000`
+#### Development Mode
+For React development with hot reload:
+```bash
+npm run react-start
+```
+
+The application will be available at `http://localhost:3000` for the backend or `http://localhost:3000` for React development mode.
 
 ## Deployment on Vercel
 
@@ -86,9 +94,18 @@ The application will be available at `http://localhost:3000`
 ```
 web-dev/
 ├── index.js              # Main server file
+├── src/                  # React source files
+│   ├── components/
+│   │   ├── UserRegistrationForm.js
+│   │   └── UsersList.js
+│   ├── App.js           # Main React component
+│   ├── index.js         # React entry point
+│   └── index.css        # Global styles
 ├── public/
-│   └── index.html        # Frontend UI
-├── package.json          # Dependencies and scripts
+│   ├── index.html       # React HTML template
+│   └── vanilla-index.html # Original HTML (fallback)
+├── build/               # React production build (generated)
+├── package.json         # Dependencies and scripts
 ├── vercel.json          # Vercel deployment configuration
 ├── .env.example         # Environment variables template
 ├── .gitignore           # Git ignore patterns
