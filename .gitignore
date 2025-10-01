@@ -11,6 +11,10 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# React build output
+build/
+*.tgz
+
 # Runtime data
 pids
 *.pid
