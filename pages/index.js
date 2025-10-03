@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import UserRegistrationForm from './components/UserRegistrationForm';
-import UsersList from './components/UsersList';
+import UserRegistrationForm from '../components/UserRegistrationForm';
+import UsersList from '../components/UsersList';
 
-function App() {
+export default function Home() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
@@ -86,5 +86,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

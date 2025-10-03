@@ -2,13 +2,11 @@
   "name": "web-dev",
   "version": "1.0.0",
   "description": "A Node.js web application for user registration with PostgreSQL database integration",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
-    "build": "react-scripts build",
-    "react-start": "react-scripts start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [
     "nodejs",
@@ -24,11 +22,10 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "next": "^15.5.4",
     "pg": "^8.16.3",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-scripts": "^5.0.1"
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "browserslist": {
     "production": [
@@ -41,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^9.37.0",
+    "eslint-config-next": "^15.5.4"
   }
 }

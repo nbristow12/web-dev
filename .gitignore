@@ -11,9 +11,13 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# React build output
+# React build output (legacy)
 build/
 *.tgz
+
+# Next.js build output
+.next/
+out/
 
 # Runtime data
 pids

@@ -1,6 +1,6 @@
 # Web Development App
 
-A Node.js web application for user registration with PostgreSQL database integration, designed for deployment on Vercel. Features a modern React frontend with state management and responsive design.
+A modern Next.js web application for user registration with PostgreSQL database integration, designed for deployment on Vercel. Features a responsive React frontend with server-side API routes and real-time user management.
 
 ## Features
 
@@ -9,13 +9,15 @@ A Node.js web application for user registration with PostgreSQL database integra
 - Responsive and modern UI design
 - Real-time user list display
 - Input validation and error handling
+- Server-side API routes with Next.js
 - Ready for Vercel deployment
 
 ## Technologies Used
 
-- **Backend**: Node.js, Express.js
+- **Framework**: Next.js 15.x (React-based full-stack framework)
 - **Database**: PostgreSQL (Neon hosted)
 - **Frontend**: React, CSS3
+- **Backend**: Next.js API Routes
 - **Deployment**: Vercel
 
 ## Setup Instructions
@@ -50,19 +52,18 @@ npm install
 
 ### 4. Run Locally
 
-#### Production Mode (React Build)
+#### Development Mode
+```bash
+npm run dev
+```
+
+#### Production Mode
 ```bash
 npm run build
 npm start
 ```
 
-#### Development Mode
-For React development with hot reload:
-```bash
-npm run react-start
-```
-
-The application will be available at `http://localhost:3000` for the backend or `http://localhost:3000` for React development mode.
+The application will be available at `http://localhost:3000`.
 
 ## Deployment on Vercel
 
@@ -93,28 +94,32 @@ The application will be available at `http://localhost:3000` for the backend or 
 
 ```
 web-dev/
-├── index.js              # Main server file
-├── src/                  # React source files
-│   ├── components/
-│   │   ├── UserRegistrationForm.js
-│   │   └── UsersList.js
-│   ├── App.js           # Main React component
-│   ├── index.js         # React entry point
-│   └── index.css        # Global styles
-├── public/
-│   ├── index.html       # React HTML template
-│   └── vanilla-index.html # Original HTML (fallback)
-├── build/               # React production build (generated)
-├── package.json         # Dependencies and scripts
-├── vercel.json          # Vercel deployment configuration
-├── .env.example         # Environment variables template
-├── .gitignore           # Git ignore patterns
-└── README.md            # This file
+├── pages/                # Next.js pages and API routes
+│   ├── api/             # API routes
+│   │   ├── users.js     # User CRUD operations
+│   │   └── health.js    # Health check endpoint
+│   ├── _app.js          # Custom App component
+│   ├── _document.js     # Custom Document component
+│   └── index.js         # Home page
+├── components/          # React components
+│   ├── UserRegistrationForm.js
+│   └── UsersList.js
+├── lib/                 # Utility libraries
+│   └── db.js           # Database connection and configuration
+├── styles/             # CSS styles
+│   └── globals.css     # Global styles
+├── public/             # Static assets (legacy)
+├── next.config.js      # Next.js configuration
+├── package.json        # Dependencies and scripts
+├── vercel.json         # Vercel deployment configuration
+├── .env.example        # Environment variables template
+├── .gitignore          # Git ignore patterns
+└── README.md           # This file
 ```
 
 ## API Endpoints
 
-- `GET /` - Serve the main UI
+- `GET /` - Main application page (Next.js page)
 - `POST /api/users` - Create a new user
 - `GET /api/users` - Get all users
 - `GET /api/health` - Health check endpoint
