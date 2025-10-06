@@ -107,3 +107,4 @@ jspm_packages/
 # Vercel
 .vercel
 package-lock.json
+package.json
