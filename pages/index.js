@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import UserRegistrationForm from '../components/UserRegistrationForm';
 import UsersList from '../components/UsersList';
 
@@ -67,11 +68,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="header">
-        <h1>User Registration</h1>
-        <p>Please fill out the form to register</p>
-      </div>
+    <>
+      <Head>
+        <title>User Registration</title>
+      </Head>
+      <div className="container">
+        <div className="header">
+          <h1>User Registration</h1>
+          <p>Please fill out the form to register</p>
+        </div>
 
       <UserRegistrationForm 
         onSubmit={handleUserRegistration}
@@ -83,6 +88,7 @@ export default function Home() {
         loading={loading}
         onRefresh={loadUsers}
       />
-    </div>
+      </div>
+    </>
   );
 }

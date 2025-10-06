@@ -5,7 +5,6 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="UTF-8" />
-        <title>User Registration</title>
       </Head>
       <body>
         <Main />
