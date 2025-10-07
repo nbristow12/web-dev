@@ -9,7 +9,14 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+
+// Serve React build files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+} else {
+  // Serve public directory in development (for fallback)
+  app.use(express.static('public'));
+}
 
 // Database connection
 const pool = new Pool({
@@ -39,7 +46,11 @@ async function initializeDatabase() {
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  } else {
+    res.sendFile(path.join(__dirname, 'public', 'vanilla-index.html'));
+  }
 });
 
 app.post('/api/users', async (req, res) => {
@@ -97,6 +108,20 @@ app.get('/api/users', async (req, res) => {
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+// Catch all handler: send back React's index.html file for any non-API routes
+app.use((req, res) => {
+  // Skip API routes
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'API endpoint not found' });
+  }
+  
+  if (process.env.NODE_ENV === 'production') {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  } else {
+    res.sendFile(path.join(__dirname, 'public', 'vanilla-index.html'));
+  }
 });
 
 // Initialize database and start server
