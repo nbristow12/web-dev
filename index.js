@@ -28,7 +28,7 @@ async function initializeDatabase() {
         birthday DATE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
+      );
     `);
     client.release();
     console.log('Database table initialized successfully');
@@ -47,8 +47,8 @@ app.post('/api/users', async (req, res) => {
 
   // Basic validation
   if (!name || !birthday || !email) {
-    return res.status(400).json({ 
-      error: 'Missing required fields: name, birthday, and email are required' 
+    return res.status(400).json({
+      error: 'Missing required fields: name, birthday, and email are required'
     });
   }
 
@@ -72,11 +72,11 @@ app.post('/api/users', async (req, res) => {
     });
   } catch (error) {
     console.error('Database error:', error);
-    
+
     if (error.code === '23505') { // Unique constraint violation
       return res.status(409).json({ error: 'Email already exists' });
     }
-    
+
     res.status(500).json({ error: 'Internal server error' });
   }
 });
