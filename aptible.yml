@@ -1,0 +1,28 @@
+# Aptible deployment configuration
+# This file defines how to deploy both frontend and backend services
+
+# Backend API service
+api:
+  type: app
+  dockerfile: ./backend/Dockerfile
+  dockerfile_context: ./backend
+  env:
+    SERVICE: api
+    NODE_ENV: production
+    PORT: 3001
+
+# Frontend web service
+web:
+  type: app
+  dockerfile: ./frontend/Dockerfile
+  dockerfile_context: ./frontend
+  env:
+    NODE_ENV: production
+    PORT: 3000
+    NEXT_PUBLIC_API_URL: "https://api-${APTIBLE_APP_NAME}.aptible.in"
+
+# Database service (PostgreSQL)
+database:
+  type: database
+  engine: postgresql
+  version: "13"

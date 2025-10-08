@@ -1,22 +1,24 @@
 # Web Development App
 
-A Node.js web application for user registration with PostgreSQL database integration, designed for deployment on Vercel.
+A full-stack web application with separate frontend and backend services for user registration with PostgreSQL database integration, designed for deployment on Aptible.
 
 ## Features
 
 - User registration form with name, birthday, and email
-- PostgreSQL database integration (compatible with Neon)
-- Responsive and modern UI design
+- PostgreSQL database integration
+- Responsive and modern UI design with React/Next.js
 - Real-time user list display
 - Input validation and error handling
-- Ready for Vercel deployment
+- Separate frontend and backend services
+- Ready for Aptible deployment with container orchestration
 
 ## Technologies Used
 
-- **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL (Neon hosted)
-- **Frontend**: HTML, CSS, JavaScript
-- **Deployment**: Vercel
+- **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Backend**: Node.js, Express.js with CORS support
+- **Database**: PostgreSQL
+- **Deployment**: Aptible (Docker containers)
+- **Development**: Concurrent development servers
 
 ## Setup Instructions
 
@@ -25,82 +27,156 @@ A Node.js web application for user registration with PostgreSQL database integra
 ```bash
 git clone <repository-url>
 cd web-dev
-npm install
+npm run install:all
 ```
 
-### 2. Database Setup (Neon)
+### 2. Database Setup
 
-1. Create a free account at [Neon](https://neon.tech/)
-2. Create a new database project
-3. Copy the connection string from your Neon dashboard
+1. Set up a PostgreSQL database (locally or hosted service)
+2. Copy the connection string for your database
 
 ### 3. Environment Configuration
 
-1. Copy the example environment file:
+1. Backend Configuration:
    ```bash
+   cd backend
    cp .env.example .env
    ```
-
-2. Edit `.env` and replace with your Neon database URL:
+   
+   Edit `backend/.env` with your database configuration:
    ```
    DATABASE_URL=postgresql://username:password@hostname:port/database
-   PORT=3000
+   PORT=3001
    NODE_ENV=development
+   FRONTEND_URL=http://localhost:3000
+   ```
+
+2. Frontend Configuration:
+   ```bash
+   cd frontend
+   cp .env.example .env.local
+   ```
+   
+   Edit `frontend/.env.local`:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:3001
+   NODE_ENV=development
+   PORT=3000
    ```
 
 ### 4. Run Locally
 
+#### Development Mode (Both Services)
 ```bash
-npm start
+npm run dev
 ```
 
-The application will be available at `http://localhost:3000`
+#### Individual Services
+```bash
+# Backend only
+npm run dev:backend
 
-## Deployment on Vercel
+# Frontend only  
+npm run dev:frontend
+```
 
-### Option 1: Vercel CLI
+- Backend API: `http://localhost:3001`
+- Frontend App: `http://localhost:3000`
 
-1. Install Vercel CLI:
+## Deployment on Aptible
+
+### Prerequisites
+
+1. Install Aptible CLI:
    ```bash
-   npm install -g vercel
+   gem install aptible-cli
    ```
 
-2. Deploy:
+2. Login to Aptible:
    ```bash
-   vercel
+   aptible login
    ```
 
-3. Add environment variables in Vercel dashboard:
-   - `DATABASE_URL`: Your Neon database URL
+### Option 1: Using aptible.yml (Recommended)
+
+1. Configure your environment variables in Aptible dashboard:
+   - `DATABASE_URL`: Your PostgreSQL database URL
    - `NODE_ENV`: `production`
+   - `NEXT_PUBLIC_API_URL`: Your backend API URL
 
-### Option 2: GitHub Integration
+2. Deploy both services:
+   ```bash
+   aptible deploy
+   ```
 
-1. Push your code to GitHub
-2. Connect your GitHub repository to Vercel
-3. Add environment variables in Vercel project settings
-4. Deploy automatically on each push
+### Option 2: Manual Deployment
+
+1. Create and deploy backend:
+   ```bash
+   aptible apps:create web-dev-backend
+   aptible config:set DATABASE_URL=... NODE_ENV=production
+   aptible deploy --app web-dev-backend --docker-image ./backend
+   ```
+
+2. Create and deploy frontend:
+   ```bash
+   aptible apps:create web-dev-frontend  
+   aptible config:set NODE_ENV=production NEXT_PUBLIC_API_URL=https://web-dev-backend.aptible.in
+   aptible deploy --app web-dev-frontend --docker-image ./frontend
+   ```
+
+### Database Setup
+
+Create a PostgreSQL database in Aptible:
+```bash
+aptible db:create web-dev-database --type postgresql
+```
+
+Update your backend environment with the database URL from Aptible.
 
 ## Project Structure
 
 ```
 web-dev/
-├── index.js              # Main server file
-├── public/
-│   └── index.html        # Frontend UI
-├── package.json          # Dependencies and scripts
-├── vercel.json          # Vercel deployment configuration
-├── .env.example         # Environment variables template
-├── .gitignore           # Git ignore patterns
-└── README.md            # This file
+├── backend/                    # Node.js/Express API server
+│   ├── server.js              # Main backend server
+│   ├── package.json           # Backend dependencies
+│   ├── Dockerfile             # Backend container build
+│   └── .env.example           # Backend environment template
+├── frontend/                   # Next.js React application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx       # Main page component
+│   │   │   ├── layout.tsx     # App layout
+│   │   │   └── globals.css    # Global styles
+│   │   ├── components/
+│   │   │   ├── UserRegistrationForm.tsx
+│   │   │   └── UsersList.tsx
+│   │   ├── lib/
+│   │   │   └── api.ts         # API client functions
+│   │   └── types/
+│   │       └── user.ts        # TypeScript definitions
+│   ├── package.json           # Frontend dependencies
+│   ├── Dockerfile             # Frontend container build
+│   └── .env.example           # Frontend environment template
+├── package.json               # Root project management
+├── Procfile                   # Process definitions for deployment
+├── aptible.yml               # Aptible deployment configuration
+├── Dockerfile                # Multi-service container build
+├── .gitignore                # Git ignore patterns
+└── README.md                 # This file
 ```
 
 ## API Endpoints
 
-- `GET /` - Serve the main UI
+### Backend API (Port 3001)
 - `POST /api/users` - Create a new user
-- `GET /api/users` - Get all users
+- `GET /api/users` - Get all users  
 - `GET /api/health` - Health check endpoint
+
+### Frontend (Port 3000)
+- `/` - Main user registration interface
+- Communicates with backend API via configured API URL
 
 ## Database Schema
 

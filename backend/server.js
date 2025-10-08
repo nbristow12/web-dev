@@ -1,15 +1,18 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const { Pool } = require('pg');
-const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Middleware
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
 
 // Database connection
 const pool = new Pool({
@@ -38,10 +41,6 @@ async function initializeDatabase() {
 }
 
 // Routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 app.post('/api/users', async (req, res) => {
   const { name, birthday, email } = req.body;
 
@@ -102,7 +101,7 @@ app.get('/api/health', (req, res) => {
 // Initialize database and start server
 initializeDatabase().then(() => {
   app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Backend server running on port ${port}`);
   });
 });
 
