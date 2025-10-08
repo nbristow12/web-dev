@@ -77,12 +77,21 @@ jspm_packages/
 
 # next.js build output
 .next
+out/
 
 # nuxt.js build output
 .nuxt
 
 # vuepress build output
 .vuepress/dist
+
+# Frontend specific
+frontend/.next/
+frontend/out/
+frontend/.env.local
+
+# Backend specific  
+backend/.env
 
 # Serverless directories
 .serverless
